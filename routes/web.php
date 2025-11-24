@@ -41,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/invoices', [PosController::class,'index'])->name('invoices.index');
     Route::get('/invoices/{id}', [PosController::class,'show'])->name('invoices.show');
     Route::get('/invoices/{id}/edit', [PosController::class,'edit'])->name('invoices.edit');
+    Route::delete('/invoices/{id}', [PosController::class, 'destroy'])->name('invoices.destroy');
     Route::get('/invoices/{id}/print', [PosController::class,'printInvoice'])->name('invoices.print');
 
     // Report Routes

@@ -260,6 +260,7 @@
         @endisset
 
         @yield('content')
+        @yield('scripts')
     </div>
     <script>
         function toggleMobileMenu() {

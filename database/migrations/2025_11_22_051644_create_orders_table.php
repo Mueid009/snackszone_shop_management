@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
             $table->text('customer_address')->nullable();
             $table->text('order_description')->nullable();
             $table->decimal('total', 12, 2)->default(0);
+            $table->decimal('discount', 12, 2)->default(0); // <-- added discount
             $table->decimal('paid', 12, 2)->default(0);
             $table->string('payment_method')->nullable(); // Bikash, Nogod, Card, Hand Cash
             $table->timestamps();

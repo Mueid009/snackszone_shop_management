@@ -14,12 +14,12 @@
         .right { float:right; }
         .total { font-weight:bold; border-top:1px solid #000; margin-top:6px; padding-top:6px; }
         .small { font-size:11px; }
+        .line { display:flex; justify-content:space-between; margin-bottom:4px; }
     </style>
 </head>
 <body onload="window.print()">
 <div class="receipt">
-    <!-- logo: using provided local path -->
-    <img src="{{ asset('/public/images/snackszone-logo.png') }}" class="logo" alt="logo">
+    <img src="{{ asset('images/snackszone-logo.png') }}" class="logo" alt="logo">
     <div class="center heading">SNACKS ZONE</div>
     <div class="center small">Made with love - Delicious Food</div>
 
@@ -49,9 +49,21 @@
     </table>
 
     <div class="total">
-        <div><span>Total</span> <span class="right">{{ number_format($order->total,2) }}</span></div>
-        <div><span>Payment Method</span> <span class="right">{{ $order->payment_method ?? 'N/A' }}</span></div>
-        <div><span>Paid</span> <span class="right">{{ number_format($order->paid,2) }}</span></div>
+        @php
+            // compute subtotal if discount is stored; otherwise approximate
+            $subtotal = $order->items->sum(fn($i) => $i->subtotal);
+            $discount = $order->discount ?? 0;
+        @endphp
+
+        <div class="line"><span>Subtotal</span> <span>{{ number_format($subtotal,2) }}</span></div>
+
+        @if($discount > 0)
+            <div class="line"><span>Discount</span> <span>-{{ number_format($discount,2) }}</span></div>
+        @endif
+
+        <div class="line"><span>Total</span> <span>{{ number_format($order->total,2) }} ({{ number_format($order->paid ?? 0,2) }})</span></div>
+
+        <div class="line"><span>Payment Method</span> <span>{{ $order->payment_method ?? 'N/A' }}</span></div>
     </div>
 
     <div class="center small" style="margin-top:20px;">

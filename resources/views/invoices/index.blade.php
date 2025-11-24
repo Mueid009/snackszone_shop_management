@@ -35,6 +35,11 @@
                             <a href="{{ route('invoices.show',$o->id) }}" class="btn btn-sm btn-info">View</a>
                             <a href="{{ route('invoices.edit',$o->id) }}" class="btn btn-sm btn-warning">Edit</a>
                             <a href="{{ route('invoices.print',$o->id) }}" target="_blank" class="btn btn-sm btn-dark">Print Invoice</a>
+                            <form action="{{ route('invoices.destroy', $o->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Are you sure?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
