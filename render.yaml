@@ -6,13 +6,8 @@ services:
     repo: https://github.com/Mueid009/snackszone_shop_management
     branch: main
     dockerfilePath: Dockerfile
-    # run migrations & storage link before web service starts
     releaseCommand: |
-      php artisan session:table
-      php artisan queue:table
-      php artisan cache:table
-      php artisan migrate --force
-      php artisan config:cache
       php artisan config:clear
-      php artisan view:clear
-      php artisan route:clear
+      php artisan migrate --force
+      php artisan storage:link || true
+      php artisan config:cache || true
