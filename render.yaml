@@ -8,7 +8,8 @@ services:
     dockerfilePath: Dockerfile
     # run migrations & storage link before web service starts
     releaseCommand: |
+      php artisan session:table
+      php artisan queue:table
+      php artisan cache:table
       php artisan migrate --force
-      php artisan storage:link
       php artisan config:cache
-      php artisan config:clear
