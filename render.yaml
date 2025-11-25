@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: snackszone-web
+    name: snackszone_shop
     env: docker
     plan: free
     repo: https://github.com/Mueid009/snackszone_shop_management
