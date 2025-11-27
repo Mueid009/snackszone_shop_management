@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Expense;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -52,7 +53,8 @@ class DashboardController extends Controller
         $totalOrders     = Order::whereBetween('created_at', [$start, $end])->count();
 
         // ---- Expenses ----
-        $totalExpenses = 0; // placeholder
+        $totalExpenses = Expense::sum('amount');
+        
 
         // ---- Monthly revenue chart (12 months) ----
         $monthlyRaw = Order::selectRaw("MONTH(created_at) as month, SUM(total) as total")

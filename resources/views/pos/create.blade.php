@@ -186,6 +186,34 @@ document.addEventListener('DOMContentLoaded', function() {
         grandTotalEl.textContent = fmt(total);
     }
 
+    // ---------- PAYABLE TOTAL: grandTotal - discount (minimal change) ----------
+    const discountInput = document.getElementById('discountInput');
+    const payableTotalEl = document.getElementById('payableTotal');
+
+    function updatePayable() {
+        // read grand total text (already formatted like "123.45")
+        let grand = parseFloat((grandTotalEl.textContent || '0').replace(/,/g, '')) || 0;
+        // read discount (coerce to number)
+        let discount = parseFloat(discountInput.value || '0') || 0;
+
+        // sanitize: no negative discount, discount can't exceed grand total
+        if (discount < 0) discount = 0;
+        if (discount > grand) discount = grand;
+
+        const payable = Math.max(0, grand - discount);
+        payableTotalEl.textContent = fmt(payable);
+    }
+
+    // update when discount changes
+    if (discountInput) discountInput.addEventListener('input', updatePayable);
+
+    // watch grand total changes (non-invasive) and update payable automatically
+    const grandObserver = new MutationObserver(updatePayable);
+    if (grandTotalEl) grandObserver.observe(grandTotalEl, { childList: true, characterData: true, subtree: true });
+
+    // initial sync
+    updatePayable();
+
     function syncSelect(select) {
         const row = select.closest('tr');
         if (!row) return;
